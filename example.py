@@ -1,6 +1,6 @@
 import random
 
-text = "I'm __noun__, here my friend, also a __noun__. Every day, we __verb__ the cows, very __adverb__."
+text = "I'm a __noun__, here my friend, also a __noun__. Every day, we __verb__ the cows, very __adverb__."
 
 blanks_dict = {
   "noun": ["boy", "boy2"],
@@ -24,7 +24,6 @@ for word in text.split(" "):
     blanks_dict[blank_type].remove(fill)
 
     # finally, replace the __blank_type__ with the "fill"
-
     word = word.replace(f"__{blank_type}__", fill)
 
 
