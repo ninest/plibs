@@ -1,0 +1,1 @@
+My name is Bob and I'm a __noun__, a species of __animal_species__. I love to __verb__ the dogs. Yesterday, I was __verb__, so I decided to __verb__ my best friends. He tasted __adjective__
