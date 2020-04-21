@@ -33,11 +33,11 @@ Here is an example of a **text**:
 
 ### Example
 ```
-My dog's name is __dog/1__, and I __verb__ him. __dog/1__ was born in the year __year__.
+My dog's name is __dog/1__, and I __verb__ him. __dog/1__ was born in the year __year__. Him and I __verb__ around a lot.
 ```
 
 **Blanks**:
-- `__verb__`
+- `__verb__` *2
 - `__year__`
 
 **ID-ed blanks**
@@ -45,15 +45,47 @@ My dog's name is __dog/1__, and I __verb__ him. __dog/1__ was born in the year _
 
 Here is an example of the possible **fills**:
 - `__verb__`: "love"
+- `__verb__`: "play"
 - `__year__`: "2017"
 - `__dog/1__`: "Scruffy"
 
 With the above fills, the output will be:
 ```
-My dog's name is Scruffy, and I love him. Scruffy was born in the year 2017.
+My dog's name is Scruffy, and I love him. Scruffy was born in the year 2017. Him and I play around a lot.
 ```
 
 ## How it works
 
+The below text will be used as the example input **text**:
+```
+My dog's name is __dog/1__, and I __verb__ him. __dog/1__ was born in the year __year__. Him and I __verb__ around a lot.
+```
+
 ### 1. Reading the text file
-All files in `texts/` are valid texts with **blanks**.
+All files in `texts/` are valid texts with **blanks** and **ID-ed blanks**. 
+
+All words are gone through. A word is a **blank** or **ID-ed blank** if it has two underscores before or after ("__"). They are added to a dictionary (`blanks_dict`), where the blank is the key:
+
+```
+# blanks_dict
+{
+  'dog/1': '',
+  'verb': [],
+  'year': []
+}
+```
+
+Note how the only **ID-ed blank** (`dog/1`) has the value of an empty string, while the other two have an empty list.
+
+At the same time, `blanks_counter` is created, which stores the number of times each blank is in the text:
+
+```
+# blank_counter
+Counter({'verb': 2, 'year': 1})
+```
+
+Note how the **ID-ed blank** (`dog/1`) is not in the counter. This is because it has only one value.
+
+### 2. Filling the blanks
+
+### 3. Creating the output text using the fills

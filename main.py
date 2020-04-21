@@ -2,7 +2,7 @@ from collections import Counter
 from random import shuffle
 
 
-text = open('texts/short.md', 'r').read()
+text = open('texts/example.md', 'r').read()
 
 blanks_dict = {}
 blanks_counter = Counter()
