@@ -88,4 +88,31 @@ Note how the **ID-ed blank** (`dog/1`) is not in the counter. This is because it
 
 ### 2. Filling the blanks
 
+TO fill **blanks**, `blanks_dict`'s keys are looped, and the user is prompted to enter **fills** for the **blanks**.
+
+For the **ID-ed blanks**, only one **fill** is required.
+
+For the above example, the user is asked for:
+- 3* `verb`s
+- 1* `year`
+- `dog/1`
+
+So at the end of this step, `blanks_dict` could end up looking like this:
+
+```
+# blanks_dict
+{
+  'dog/1': 'Scruffy',
+  'verb': ['play', 'love'],
+  'year': ['1969']
+}
+```
+
+Note that the list of keys (`blanks_dict.keys()`) are shuffled before asking for **fills**.
+
+
 ### 3. Creating the output text using the fills
+
+This is probably the simplest. It only involves replacing the the **blanks** in the original text with **fills**, creating the new text. The only thing to look out for is ensuring that punctuation is added after words with blanks. The output for the example can be:
+
+> My dog's name is Scruffy, and I **love** him. Scruffy was born in the year **1969**. Him and I **play** around a lot.
