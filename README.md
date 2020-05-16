@@ -1,8 +1,14 @@
-# PyLibs
-> A Python implementation of MadLibs
+# [PyLibs](https://plibs.herokuapp.com/)
+> A Python implementation of MadLibs (that runs in the browser with Streamlit)
 
 ![Made with Python](https://img.shields.io/badge/Made%20With-%20Python%20🐍%20-red?style=flat-square)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+## Gallery
+- To be added
+
+## Demo
+[https://plibs.herokuapp.com/](https://plibs.herokuapp.com/)
 
 ## Explanation
 
