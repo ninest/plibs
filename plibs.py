@@ -5,7 +5,7 @@ from random import shuffle
 """
 # Plibs
 
-MadLibs in Python
+A python implementation of MadLibs with Streamlit
 """
 
 text_selection_list =  ("Example", "Short", "IDed")
