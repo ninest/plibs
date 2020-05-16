@@ -8,25 +8,21 @@ from random import shuffle
 MadLibs in Python
 """
 
+text_selection_list =  ("Example", "Short", "IDed")
+
 # let users choose a text
+"## Choose a text"
+
 text_selection = st.selectbox(
-    "Choose a text",
-    ("Example", "Short", "IDed")
+    "text",
+    text_selection_list
 )
 
-file = ""
-
-if text_selection == "Example":
-  file = "example.md"
-elif text_selection == "Short":
-  file = "short.md"
-elif text_selection == "IDed":
-  file = "ided.md"
-
-st.write(file)
-
+file = text_selection.lower() + ".md"
 text = open(f'texts/{file}', 'r').read()
 
+
+"## Fill in the blanks"
 
 # Create dictionaries
 blanks_dict = {}
@@ -96,5 +92,7 @@ if st.button("Done"):
         word = blanks_dict[blank_type].pop()
     new_text += f"{word}{suffix} "
   
+  # Leave a line to add some breathing space
+  ""
   new_text
 
