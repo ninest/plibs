@@ -38,9 +38,8 @@ Before we start, it's important to understand what the following are:
 Here is an example of a **text**:
 
 ### Example
-```
-My dog's name is __dog/1__, and I __verb__ him. __dog/1__ was born in the year __year__. Him and I __verb__ around a lot.
-```
+> My dog's name is __dog/1__, and I __verb__ him. __dog/1__ was born in the year __year__. Him and I __verb__ around a lot.
+
 
 **Blanks**:
 - `__verb__` *2
@@ -56,9 +55,10 @@ Here is an example of the possible **fills**:
 - `__dog/1__`: "Scruffy"
 
 With the above fills, the output will be:
-```
-My dog's name is Scruffy, and I love him. Scruffy was born in the year 2017. Him and I play around a lot.
-```
+
+
+> My dog's name is Scruffy, and I love him. Scruffy was born in the year 2017. Him and I play around a lot.
+
 
 ## How it works
 
