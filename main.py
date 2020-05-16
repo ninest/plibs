@@ -67,4 +67,7 @@ for word in text.split(" "):
       word = blanks_dict[blank_type].pop()
   new_text += f"{word}{suffix} "
 
+# add line breaks
+new_text = new_text.replace("\\", "\n")
+
 print(new_text)

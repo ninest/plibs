@@ -8,7 +8,7 @@ from random import shuffle
 A python implementation of MadLibs with Streamlit
 """
 
-text_selection_list =  ("Example", "Short", "IDed")
+text_selection_list = ("Example", "Short", "IDed", "Be Kind")
 
 # let users choose a text
 "## Choose a text"
@@ -18,7 +18,7 @@ text_selection = st.selectbox(
     text_selection_list
 )
 
-file = text_selection.lower() + ".md"
+file = text_selection.replace(" ", "-").lower() + ".md"
 text = open(f'texts/{file}', 'r').read()
 
 
@@ -44,9 +44,12 @@ for word in text.split(" "):
 # create text inputs
 keys = list(blanks_dict.keys())
 
+
 @st.cache
 def shuffle_keys():
   shuffle(keys)
+
+
 shuffle_keys()
 
 
@@ -66,11 +69,11 @@ for blank in keys:
       # convert the _ to a space
       label = blank.replace("_", " ")
       blanks_dict[blank].append(
-        st.text_input(label, key=f'blank{no_required}{counter}')
+          st.text_input(label, key=f'blank{no_required}{counter}')
       )
       # f'blank{no_required}{counter}'
       counter += 1
-  
+
 
 if st.button("Done"):
   # filling in the blanks with what the user entered
@@ -78,21 +81,25 @@ if st.button("Done"):
 
   for word in text.split(" "):
     suffix = ""  # this is punctuation (if any)
-    
+
     if "__" in word:
       blank_type = word.split("__")[1]
 
       # checking if there's a punctuation
-      try: suffix = word.split("__")[2]
-      except: pass
+      try:
+        suffix = word.split("__")[2]
+      except:
+        pass
 
       if "/" in blank_type:
         word = blanks_dict[blank_type]
       else:
         word = blanks_dict[blank_type].pop()
     new_text += f"{word}{suffix} "
-  
+
+  # add line breaks
+  new_text = new_text.replace("\\", "\n")
+
   # Leave a line to add some breathing space
   ""
   new_text
-
