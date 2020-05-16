@@ -1,1 +1,1 @@
-My dog's name is __dog/1__. He always responded to the name __dog/1__. One day, he __verb-ed__ the mailman.
+My dog's name is __dog_name/1__. He always responded to the name __dog_name/1__. One day, he __verb-ed__ the mailman.

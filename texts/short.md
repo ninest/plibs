@@ -1,1 +1,1 @@
-Hello, my name is __name__. I enjoy __verb_ing__! I love my __laptop_name__ becaus it is __verb_ing__.
+Hello, my name is __name__. I enjoy __verb-ing__! I love my __laptop_name__ becaus it is __verb-ing__.
