@@ -106,11 +106,10 @@ def fill_blanks(text, blanks_dict):
   for paragraph in text.split("\n"):
     # paragraph
 
+    previous_word = ""
     for word in nltk.word_tokenize(paragraph):
       prefix = ""
       suffix = ""  # this is punctuation (if any)
-
-      # word
 
       if "__" in word:
         blank_type = word.split("__")[1]
@@ -135,7 +134,13 @@ def fill_blanks(text, blanks_dict):
         # replace final space with punctiation
         new_text = new_text[:-1] + f'{word} '
       else:
+        # check if it's the sentence start
+        if previous_word == "." or previous_word == "\n" or previous_word == "":
+          # and capitalize if so
+          word = word.capitalize()
         new_text += f"{prefix}{word}{suffix} "
+      
+      previous_word = word
 
     # add new paragraph
     new_text += "\n"
