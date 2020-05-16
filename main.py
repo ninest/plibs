@@ -1,8 +1,9 @@
 from collections import Counter
 from random import shuffle
+import re
 
 
-text = open('texts/example.md', 'r').read()
+text = open('texts/simple-letter.md', 'r').read()
 
 blanks_dict = {}
 blanks_counter = Counter()
@@ -65,6 +66,8 @@ for word in text.split(" "):
       word = blanks_dict[blank_type]
     else:
       word = blanks_dict[blank_type].pop()
+
+  print(word, suffix)
   new_text += f"{word}{suffix} "
 
 # add line breaks

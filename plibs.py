@@ -1,105 +1,146 @@
 import streamlit as st
 from collections import Counter
-from random import shuffle
+import random
+import nltk
+import string
 
-"""
-# Plibs
+abbrs = {
+  "verb-ing": "verb ending in ing"
+}
 
-A python implementation of MadLibs with Streamlit
-"""
+def main():
+  """
+  # Plibs
 
-text_selection_list = ("Example", "Short", "IDed", "Be Kind")
+  A python implementation of MadLibs with Streamlit
+  """
 
-# let users choose a text
-"## Choose a text"
+  text_selection_list = ("Example", "Short", "IDed", "Be Kind", "Letter from camp", "Sick note", "Simple letter")
 
-text_selection = st.selectbox(
-    "text",
-    text_selection_list
-)
+  # let users choose a text
+  "## Choose a text"
 
-file = text_selection.replace(" ", "-").lower() + ".md"
-text = open(f'texts/{file}', 'r').read()
+  text_selection = st.selectbox("text",text_selection_list)
+
+  file = text_selection.replace(" ", "-").lower() + ".md"
+  text = open(f'texts/{file}', 'r').read()
 
 
-"## Fill in the blanks"
+  "## Fill in the blanks"
 
-# Create dictionaries
-blanks_dict = {}
-blanks_counter = Counter()
+  # Create dictionaries
+  blanks_dict, blanks_counter = get_blanks(text)
 
-for word in text.split(" "):
-  # find if it's a blank
-  if "__" in word:
-    # find the blank type
-    blank_type = word.split("__")[1]
+  blanks_dict
 
-    # check if it's an IDed blank
-    if "/" in blank_type:
-      blanks_dict[blank_type] = ""
+  # create text inputs
+  keys = list(blanks_dict.keys())
+  keys = shuffle_list(keys)
+
+
+  for blank in keys:
+    if "/" in blank:
+      # remove the ID number
+      label = blank.split("/")[0]
+      # convert the _ to a space
+      label = label.replace("_", " ")
+      blanks_dict[blank] = st.text_input(get_label(label), key=blank)
+      # blank
+
     else:
-      blanks_dict[blank_type] = []
-      blanks_counter[blank_type] += 1
+      no_required = blanks_counter[blank]
 
-# create text inputs
-keys = list(blanks_dict.keys())
+      for i in range(0, no_required):
+        # convert the _ to a space
+        label = blank.replace("_", " ")
+        blanks_dict[blank].append(
+            st.text_input(get_label(label), key=f'blank{no_required}{i}')
+        )
+
+
+  if st.button("Done"):
+    blanks_dict
+    new_text = fill_blanks(text, blanks_dict)
+    new_text
 
 
 @st.cache
-def shuffle_keys():
-  shuffle(keys)
+def shuffle_list(lst):
+  return random.sample(lst, len(lst))
+
+def get_label(strng):
+  # see if label exists
+  try: label = abbrs[strng]
+  except: label = strng
+
+  label = label.replace("-p", " (plural)")
+
+  return label
+
+def get_blanks(text):
+  blanks_dict = {}
+  blanks_counter = Counter()
+  for word in nltk.word_tokenize(text):
+    # find if it's a blank
+    if "__" in word:
+      # find the blank type
+      blank_type = word.split("__")[1]
+
+      # check if it's an IDed blank
+      if "/" in blank_type:
+        blanks_dict[blank_type] = ""
+      else:
+        blanks_dict[blank_type] = []
+        blanks_counter[blank_type] += 1
+  
+  return blanks_dict, blanks_counter
 
 
-shuffle_keys()
-
-
-for blank in keys:
-  if "/" in blank:
-    # remove the ID number
-    label = blank.split("/")[0]
-    # convert the _ to a space
-    label = label.replace("_", " ")
-    blanks_dict[blank] = st.text_input(label, key=blank)
-    # blank
-
-  else:
-    no_required = blanks_counter[blank]
-    counter = 0
-    for i in range(0, no_required):
-      # convert the _ to a space
-      label = blank.replace("_", " ")
-      blanks_dict[blank].append(
-          st.text_input(label, key=f'blank{no_required}{counter}')
-      )
-      # f'blank{no_required}{counter}'
-      counter += 1
-
-
-if st.button("Done"):
+def fill_blanks(text, blanks_dict):
   # filling in the blanks with what the user entered
   new_text = ""
 
-  for word in text.split(" "):
-    suffix = ""  # this is punctuation (if any)
+  # for word in text.split(" "):
+  for paragraph in text.split("\n"):
+    # paragraph
 
-    if "__" in word:
-      blank_type = word.split("__")[1]
+    for word in nltk.word_tokenize(paragraph):
+      prefix = ""
+      suffix = ""  # this is punctuation (if any)
 
-      # checking if there's a punctuation
-      try:
-        suffix = word.split("__")[2]
-      except:
-        pass
+      # word
 
-      if "/" in blank_type:
-        word = blanks_dict[blank_type]
+      if "__" in word:
+        blank_type = word.split("__")[1]
+
+        # checking if there's a punctuation
+        try: suffix = word.split("__")[2]
+        except: pass
+
+        # also check for prefix (this is most likely markdown formatting)
+        # ex: **__verb__**
+        try: prefix = word.split("__")[0]
+        except: pass
+        
+
+        if "/" in blank_type:
+          word = blanks_dict[blank_type]
+        else:
+          word = blanks_dict[blank_type].pop()
+
+      # if punctuation, don't add space
+      if word in string.punctuation:
+        # replace final space with punctiation
+        new_text = new_text[:-1] + f'{word} '
       else:
-        word = blanks_dict[blank_type].pop()
-    new_text += f"{word}{suffix} "
+        new_text += f"{prefix}{word}{suffix} "
 
+    # add new paragraph
+    new_text += "\n"
   # add line breaks
   new_text = new_text.replace("\\", "\n")
 
-  # Leave a line to add some breathing space
-  ""
-  new_text
+  return new_text
+
+if __name__ == '__main__':
+  main()

@@ -122,3 +122,9 @@ Note that the list of keys (`blanks_dict.keys()`) are shuffled before asking for
 This is probably the simplest. It only involves replacing the the **blanks** in the original text with **fills**, creating the new text. The only thing to look out for is ensuring that punctuation is added after words with blanks. The output for the example can be:
 
 > My dog's name is **Scruffy**, and I **love** him. **Scruffy** was born in the year **1969**. Him and I **play** around a lot.
+
+## Pipenv commands
+```
+pipenv install <package-name>
+pipenv lock -r > requirements.txt
+```
