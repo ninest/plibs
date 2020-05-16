@@ -4,6 +4,8 @@ import random
 import nltk
 import string
 
+nltk.download('punkt')
+
 abbrs = {
   "verb-ing": "verb ending in ing"
 }
