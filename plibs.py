@@ -7,7 +7,8 @@ import string
 nltk.download('punkt')
 
 abbrs = {
-  "verb-ing": "verb ending in ing"
+  "verb-ing": "verb ending in ing",
+  "verb-ed": "verb ending in ed",
 }
 
 def main():
@@ -28,12 +29,13 @@ def main():
   text = open(f'texts/{file}', 'r').read()
 
 
-  "## Fill in the blanks"
+  """
+  ## Fill in the blanks
+  Make sure to fill up **all**
+  """
 
   # Create dictionaries
   blanks_dict, blanks_counter = get_blanks(text)
-
-  blanks_dict
 
   # create text inputs
   keys = list(blanks_dict.keys())
@@ -61,7 +63,6 @@ def main():
 
 
   if st.button("Done"):
-    blanks_dict
     new_text = fill_blanks(text, blanks_dict)
     new_text
 
@@ -110,6 +111,8 @@ def fill_blanks(text, blanks_dict):
     for word in nltk.word_tokenize(paragraph):
       prefix = ""
       suffix = ""  # this is punctuation (if any)
+      
+      # word
 
       if "__" in word:
         blank_type = word.split("__")[1]
@@ -130,7 +133,8 @@ def fill_blanks(text, blanks_dict):
           word = blanks_dict[blank_type].pop()
 
       # if punctuation, don't add space
-      if word in string.punctuation:
+      # also, don't add space if it's something like n't
+      if word in string.punctuation or word=="n't":
         # replace final space with punctiation
         new_text = new_text[:-1] + f'{word} '
       else:
