@@ -7,9 +7,20 @@ import string
 nltk.download('punkt')
 
 abbrs = {
-  "verb-ing": "verb ending in ing",
-  "verb-ed": "verb ending in ed",
+    "verb-ing": "verb ending in ing",
+    "verb-ed": "verb ending in ed",
 }
+
+text_selection_list = (
+    "Example",
+    "Short",
+    "IDed",
+    "Be Kind",
+    "Letter from camp",
+    "Sick note",
+    "Simple letter"
+)
+
 
 def main():
   """
@@ -18,16 +29,13 @@ def main():
   A python implementation of MadLibs with Streamlit
   """
 
-  text_selection_list = ("Example", "Short", "IDed", "Be Kind", "Letter from camp", "Sick note", "Simple letter")
-
   # let users choose a text
   "## Choose a text"
 
-  text_selection = st.selectbox("text",text_selection_list)
+  text_selection = st.selectbox("text", text_selection_list)
 
   file = text_selection.replace(" ", "-").lower() + ".md"
   text = open(f'texts/{file}', 'r').read()
-
 
   """
   ## Fill in the blanks
@@ -40,7 +48,6 @@ def main():
   # create text inputs
   keys = list(blanks_dict.keys())
   keys = shuffle_list(keys)
-
 
   for blank in keys:
     if "/" in blank:
@@ -61,7 +68,6 @@ def main():
             st.text_input(get_label(label), key=f'blank{no_required}{i}')
         )
 
-
   if st.button("Done"):
     new_text = fill_blanks(text, blanks_dict)
     new_text
@@ -71,14 +77,18 @@ def main():
 def shuffle_list(lst):
   return random.sample(lst, len(lst))
 
+
 def get_label(strng):
   # see if label exists
-  try: label = abbrs[strng]
-  except: label = strng
+  try:
+    label = abbrs[strng]
+  except:
+    label = strng
 
   label = label.replace("-p", " (plural)")
 
   return label
+
 
 def get_blanks(text):
   blanks_dict = {}
@@ -95,7 +105,7 @@ def get_blanks(text):
       else:
         blanks_dict[blank_type] = []
         blanks_counter[blank_type] += 1
-  
+
   return blanks_dict, blanks_counter
 
 
@@ -111,21 +121,24 @@ def fill_blanks(text, blanks_dict):
     for word in nltk.word_tokenize(paragraph):
       prefix = ""
       suffix = ""  # this is punctuation (if any)
-      
+
       # word
 
       if "__" in word:
         blank_type = word.split("__")[1]
 
         # checking if there's a punctuation
-        try: suffix = word.split("__")[2]
-        except: pass
+        try:
+          suffix = word.split("__")[2]
+        except:
+          pass
 
         # also check for prefix (this is most likely markdown formatting)
         # ex: **__verb__**
-        try: prefix = word.split("__")[0]
-        except: pass
-        
+        try:
+          prefix = word.split("__")[0]
+        except:
+          pass
 
         if "/" in blank_type:
           word = blanks_dict[blank_type]
@@ -134,7 +147,7 @@ def fill_blanks(text, blanks_dict):
 
       # if punctuation, don't add space
       # also, don't add space if it's something like n't
-      if word in string.punctuation or word=="n't":
+      if word in string.punctuation or word == "n't":
         # replace final space with punctiation
         new_text = new_text[:-1] + f'{word} '
       else:
@@ -143,7 +156,7 @@ def fill_blanks(text, blanks_dict):
           # and capitalize if so
           word = word.capitalize()
         new_text += f"{prefix}{word}{suffix} "
-      
+
       previous_word = word
 
     # add new paragraph
@@ -152,6 +165,7 @@ def fill_blanks(text, blanks_dict):
   new_text = new_text.replace("\\", "\n")
 
   return new_text
+
 
 if __name__ == '__main__':
   main()
